@@ -4,8 +4,6 @@ hook.Add("EntityTakeDamage", "dodo_tardis_hads", function(tard)
 		if tard:GetClass() == "gmod_tardis" then
 			timer.Simple(0.25, function()
 				tard:Demat()
-				local interior = self.interior:GetPos()
-				util.ScreenShake(interior, 5, 5, 2)
 				local owner = tard:GetCreator()
 				local opos = owner:GetPos()
 				owner:SendLua("chat.AddText(\"Your TARDIS is under attack! It has dematerialised and is now on its way to you for safety!\")")
