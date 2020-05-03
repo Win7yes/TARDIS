@@ -37,10 +37,24 @@ TARDIS:AddControl("hads",{
 	serveronly=true,
 	interior=true
 })
+TARDIS:AddControl("repair",{
+	func=function(self,ply)
+        self:ToggleRepair()
+	end,
+	exterior=true,
+	serveronly=true
+})
+TARDIS:AddControl("physbrake",{
+	func=function(self,ply)
+        self:TogglePhyslock()
+	end,
+	exterior=true,
+	serveronly=true
+})
 
 if SERVER then return end
 
-TARDIS:AddScreen("New features fallback", {menu=false}, function(self,ext,int,frame,screen)
+TARDIS:AddScreen("Functions Fallback", {menu=false}, function(self,ext,int,frame,screen)
 
     local power=vgui.Create("DButton",frame)
     power:SetSize( frame:GetWide()*0.2, frame:GetTall()*0.2 )
@@ -49,32 +63,48 @@ TARDIS:AddScreen("New features fallback", {menu=false}, function(self,ext,int,fr
     power:SetFont("TARDIS-Default")
     power.DoClick = function()
         TARDIS:Control("power")
+    end    
+    
+    local repair=vgui.Create("DButton",frame)
+    repair:SetSize( frame:GetWide()*0.2, frame:GetTall()*0.2 )
+    repair:SetPos(frame:GetWide()*0.35 - repair:GetWide()*0.5,frame:GetTall()*0.15 - repair:GetTall()*0.5)
+    repair:SetText("Repair TARDIS")
+    repair:SetFont("TARDIS-Default")
+    repair.DoClick = function()
+        TARDIS:Control("repair")
     end
 
     local fastremat=vgui.Create("DButton",frame)
     fastremat:SetSize( frame:GetWide()*0.2, frame:GetTall()*0.2 )
     fastremat:SetPos(frame:GetWide()*0.13 - fastremat:GetWide()*0.5,frame:GetTall()*0.4 - fastremat:GetTall()*0.5)
-    fastremat:SetText("Toggle Fast Remat")
+    fastremat:SetText("Fast Remat PLH")
     fastremat:SetFont("TARDIS-Default")
     fastremat.DoClick = function()
         TARDIS:Control("fastremat")
     end
-    
-    local fastrematlbl = vgui.Create("DLabel",frame)
-    fastrematlbl:SetTextColor(Color(0,0,0))
-    fastrematlbl:SetFont("TARDIS-Med")
-    fastrematlbl.DoLayout = function(self)
-        fastrematlbl:SizeToContents()
-        fastrematlbl:SetPos((frame:GetWide()*0.55)-(fastrematlbl:GetWide()*0.5),(frame:GetTall()*0.4)-(fastrematlbl:GetTall()*0.5))
-    end
-    fastrematlbl:SetText("Fast Remat is PLACEHOLDER")
-    fastrematlbl:DoLayout()
-    function fastrematlbl:Think()
+    function fastremat:Think()
         local on = ext:GetData("demat-fast")
         if on then
-            self:SetText("Fast Remat is on")
+            self:SetText("Fast Remat on")
         else
-            self:SetText("Fast Remat is off")
+            self:SetText("Fast Remat off")
+        end
+    end
+    
+    local physbrake = vgui.Create("DButton",frame)
+    physbrake:SetSize( frame:GetWide()*0.2, frame:GetTall()*0.2)
+    physbrake:SetFont("TARDIS-Default")
+    physbrake:SetPos((frame:GetWide()*0.35)-(physbrake:GetWide()*0.5),(frame:GetTall()*0.4)-(physbrake:GetTall()*0.5))
+    physbrake:SetText("Physlock PLH")
+    physbrake.DoClick = function()
+        TARDIS:Control("physbrake")
+    end
+    function physbrake:Think()
+        local on = ext:GetData("physlock", false)
+        if on then
+            self:SetText("Physlock on")
+        else
+            self:SetText("Physlock off")
         end
     end
 
@@ -92,7 +122,6 @@ TARDIS:AddScreen("New features fallback", {menu=false}, function(self,ext,int,fr
 	hads:SetPos(frame:GetWide()*0.13 - power:GetWide()*0.5,frame:GetTall()*0.85 - power:GetTall()*0.5)
 	hads:SetText("Toggle HADS")
 	hads:SetFont("TARDIS-Default")
-	hads:SetImage( "tardis.png" )
 	hads.DoClick = function()
 		TARDIS:Control("hads")
 	end		
