@@ -2,6 +2,8 @@ TARDIS
 =
 A functioning version of the TARDIS for Garry's Mod.
 
+This fork (francodml/TARDIS) is outdated. Changes are being pushed to [MattJeanes/TARDIS](https://github.com/MattJeanes/TARDIS) instead.
+
 Requirements
 =
 This addon requires the following:
